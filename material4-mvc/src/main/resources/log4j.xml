@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+    debug="false">
+
+	<!-- File appender definition  -->
+    <appender name="material4" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${catalina.base}/logs/helpdesk.log" />
+        <param name="File" value="helpdesk.log" />
+        <param name="Append" value="true" />
+        <param name="MaxFileSize" value="10MB" />
+        <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                value="%d{yyyy-MM-dd HH:mm:ss.SSS z} [%c] [%p] %m%n" />
+        </layout>
+    </appender>
+
+	<!-- Console (STDOUT) appender configuration. -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                value="%d{yyyy-MM-dd HH:mm:ss.SSS z} [%c] [%p] %m%n" />
+        </layout>
+    </appender>
+
+    <!-- Logger setup -->
+    <logger name="java.sql">
+        <level value="DEBUG" />
+    </logger>
+
+    <logger name="org.springframework.jdbc">
+        <level value="DEBUG" />
+    </logger>
+
+    <logger name="org.springframework.xml">
+        <level value="INFO" />
+    </logger>
+
+    <!--
+    <logger name="org.jibx">
+        <level value="DEBUG" />
+    </logger>
+    -->
+
+    <root>
+        <level value="ERROR" />
+        <appender-ref ref="helpdesk" />
+        <appender-ref ref="console" />
+    </root>
+</log4j:configuration>

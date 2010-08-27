@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+ <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+    <definition name=".login" template="/WEB-INF/jsp/login.jsp"/>
+
+    <!--
+    <definition name=".base.layout" template="/WEB-INF/jsp/tiles/layout.jsp">
+        <put-attribute name="title" value="common.title"/>
+        <put-attribute name="menu" value="/WEB-INF/jsp/tiles/menu.jsp" />
+        <put-attribute name="body" value="/WEB-INF/jsp/tiles/empty.jsp" />
+    </definition>
+
+    <definition name=".welcome" extends=".base.layout">
+        <put-attribute name="title" value="welcome.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/welcome.jsp" />
+    </definition>
+
+    <definition name=".user.edit" extends=".base.layout">
+        <put-attribute name="title" value="user.edit.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/userEdit.jsp" />
+    </definition>
+
+    <definition name=".request" extends=".base.layout">
+        <put-attribute name="title" value="request.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/request.jsp"/>
+    </definition>
+
+    <definition name=".user.list" extends=".base.layout">
+        <put-attribute name="title" value="user.list.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/userList.jsp" />
+    </definition>
+
+    <definition name=".user" extends=".base.layout">
+        <put-attribute name="title" value="user.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/user.jsp" />
+    </definition>
+
+    <definition name=".help.type.list" extends=".base.layout">
+        <put-attribute name="title" value="help.type.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/helpTypeList.jsp" />
+    </definition>
+    -->
+
+</tiles-definitions>
