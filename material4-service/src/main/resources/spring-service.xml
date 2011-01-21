@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/oxm
+        http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd">
 
+    <!-- ibatis 2.3 -->
+    <!--
     <bean id="guideService" class="by.vitsoft.material.service.GuideServiceImpl">
         <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="configSource" value="classpath:guide.xml"/>
     </bean>
+    -->
+
+    <bean id="guideService" class="by.vitsoft.material.service.GuideServiceImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <property name="configSource" value="classpath:guide.xml"/>
+    </bean>
+
+
+    <oxm:jaxb2-marshaller id="marshaller" contextPath="by.vitsoft.material.dto.guide"/>
+
     <!--
     <bean id="securityService" class="com.epam.vgutrn.service.SecurityServiceJdbcImpl">
         <property name="dataSource" ref="dataSource"/>

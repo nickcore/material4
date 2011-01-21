@@ -1,55 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!DOCTYPE sqlMap      
-    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
-    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
-
-<sqlMap namespace="Guide">
-
-    <!-- Use type aliases to avoid typing the full classname every time. -->
-    <typeAlias alias="Unit" type="by.vitsoft.material.dto.Unit"/>
-
-    <resultMap id="UnitResult" class="Unit">
-        <result property="id" column="CD"/>
-        <result property="unitId" column="EI_K"/>
-        <result property="unitName" column="EI_I"/>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="Guide">
+    <resultMap id="UnitResult" type="Unit">
+        <id property="id" column="cd"/>
+        <result property="unitId" column="ei_k"/>
+        <result property="unitName" column="ei_i"/>
     </resultMap>
 
-    <!-- Select with no parameters using the result map for Account class. -->
     <select id="selectAllUnits" resultMap="UnitResult">
         select * from T7_EI
     </select>
 
+    <insert id="insertUnit" parameterType="Unit">
+        <selectKey resultType="long" order="BEFORE" keyProperty="id">
+            <![CDATA[select gen_id(g7_ei, 1) as id from rdb$database]]>
+        </selectKey>
+        insert into t7_ei (cd, ei_k, ei_i)
+        values (#{id}, #{unitId}, #{unitName})
+    </insert>
 
-  <!-- A simpler select example without the result map.  Note the 
-       aliases to match the properties of the target result class. -->
-  <!--
-  <select id="selectAccountById" parameterClass="int" resultClass="Account">
-    select
-      ACC_ID as id,
-      ACC_FIRST_NAME as firstName,
-      ACC_LAST_NAME as lastName,
-      ACC_EMAIL as emailAddress
-    from ACCOUNT
-    where ACC_ID = #id#
-  </select>
-   -->
+    <update id="updateUnit" parameterType="Unit">
+        update t7_ei set
+          ei_k = #{unitId},
+          ei_i = #{unitName}
+        where
+          cd = #{id}
+    </update>
+
+    <delete id="deleteUnit" parameterType="long">
+        delete from t7_ei where cd = #{id}
+    </delete>
+</mapper>
+<!--
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Guide">
+    <typeAlias alias="Unit" type="by.vitsoft.material.dto.Unit"/>
+
+    <resultMap id="UnitResult" class="Unit">
+        <result property="id" column="cd"/>
+        <result property="unitId" column="ei_k"/>
+        <result property="unitName" column="ei_i"/>
+    </resultMap>
+
+    <select id="selectAllUnits" resultMap="UnitResult">
+        select * from T7_EI
+    </select>
 
     <insert id="insertUnit" parameterClass="Unit">
-        
-        insert into T7_EI (CD, EI_K, EI_I
+        <selectKey resultClass="long" type="pre" keyProperty="id">
+            <![CDATA[select gen_id(g7_ei, 1) as id from rdb$$database]]>
+        </selectKey>
+        insert into t7_ei (cd, ei_k, ei_i)
         values (#id#, #unitId#, #unitName#)
     </insert>
 
     <update id="updateUnit" parameterClass="Unit">
-        update T7_EI set
-          EI_K = #unitId#,
-          EI_I = #unitName#
+        update t7_ei set
+          ei_k = #unitId#,
+          ei_i = #unitName#
         where
-          CD = #id#
+          cd = #id#
     </update>
 
     <delete id="deleteUnit" parameterClass="long">
-        delete from T7_EI where CD = #id#
+        delete from t7_ei where cd = #id#
     </delete>
 </sqlMap>
+-->

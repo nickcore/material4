@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/oxm
+        http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+    <import resource="classpath:spring-dao.xml"/>
+    <import resource="classpath:spring-service.xml"/>
+
+    <context:annotation-config/>
+
+    <security:http>
+        <security:intercept-url pattern="/login.html" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="https"/>
+        <security:intercept-url pattern="/**/*.html" access="ROLE_USER,ROLE_ADMIN" />
+        <security:form-login login-processing-url="/j_spring_security_check" login-page="/login.html" authentication-failure-url="/login.html?login_error=true"/>
+        <security:logout logout-url="/j_spring_security_logout" logout-success-url="/"/>
+        <!-- <security:anonymous/> -->
+    </security:http>
+
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:password-encoder hash="md5"/>
+            <security:jdbc-user-service data-source-ref="dataSource"
+                role-prefix="ROLE_"
+                users-by-username-query="select user_login as username, user_password as &quot;PASSWORD&quot;,
+                    1 as enabled from t7_user where LOWER(user_login) = LOWER(?)"
+                authorities-by-username-query="select u.user_login as username, UPPER(r.role_i) as authority 
+                    from t7_user u, t7_user_role_map ur, t7_role r 
+                    where u.cd = ur.cd_user and ur.cd_role = r.cd and LOWER(user_login) = LOWER(?)"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!--
+    <bean id="springSecurityFilterChain" class="org.springframework.security.util.FilterChainProxy">
+        <security:filter-chain-map path-type="ant">
+            <security:filter-chain 
+                pattern="/**"
+                filters="httpSessionContextIntegrationFilterWithASCFalse,
+                 _basicAuthenticationFilter,basicExceptionTranslationFilter,
+                 _filterSecurityInterceptor" />
+        </security:filter-chain-map>
+    </bean>
+    -->
+</beans>

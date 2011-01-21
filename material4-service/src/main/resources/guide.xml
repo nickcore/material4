@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guide xmlns="http://www.vitsoft.by/guide" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.vitsoft.by/guide xsd/guide.xsd ">
+
+    <guideInfo id="unit" class="by.vitsoft.material.dto.Unit">
+        <description>Справочник едениц измерения</description>
+        <propertySet>
+            <property name="id" displayName="ИД" width="55"/>
+            <property name="unitId" displayName="Код" width="80" popupWidth="5"/>
+            <property name="unitName" displayName="Еденица изм." width="90" popupWidth="20"/>
+        </propertySet>
+        <visiblePropertyNames>unitId,unitName</visiblePropertyNames>
+        <popupPropertyNames>unitId,unitName</popupPropertyNames>
+        <orderSet>
+            <order property="unitName" direction="Asc" />
+        </orderSet>
+        <findProperty>unitName</findProperty>
+        <optionSet>
+            <option>Edit</option>
+            <option>Filt</option>
+            <option>Find</option>
+            <option>Sort</option>
+            <option>Delete</option>
+        </optionSet>
+    </guideInfo>
+
+    <guideInfo id="material" class="by.vitsoft.material.dto.Material">
+        <description>Справочник материалов</description>
+        <propertySet>
+            <property name="id" displayName="ИД"/>
+            <property name="materialId" displayName="Код" width="5"/>
+            <property name="materialName" displayName="Материал" width="25"/>
+            <property name="unit.id" displayName="ИД еи"><lookUp>material-unit</lookUp></property>
+            <property name="unit.unitId" displayName="Код еи" width="5"/>
+            <property name="unit.unitName" displayName="Еденица изм." width="15"/>
+            <property/>
+        </propertySet>
+        <visiblePropertyNames>materialId,materialName,unit.unitId,unit.unitName</visiblePropertyNames>
+        <popupPropertyNames>materialId,materialName,unit.unitName</popupPropertyNames>
+        <orderSet>
+            <order property="materialName" direction="Asc" />
+        </orderSet>
+        <findProperty>"materialName"</findProperty>
+        <optionSet>
+            <option>Edit</option>
+            <option>Filt</option>
+            <option>Find</option>
+            <option>Sort</option>
+            <option>Delete</option>
+        </optionSet>
+    </guideInfo>
+
+    <lookUpInfo id="material-unit" guideInfo="material" lookUpGuideInfo="unit">
+        <propertyName>unit.unitName</propertyName>
+        <resPropertyNames>unit.unitId,unit.unitName,unit.id</resPropertyNames>
+        <lookUpResPropertyNames>unitId,unitName,id </lookUpResPropertyNames>
+        <resCount>3</resCount>
+    </lookUpInfo>
+</guide>

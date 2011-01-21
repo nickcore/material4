@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings version="2.1" jaxb:extensionBindingPrefixes="inheritance toString annox"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+    xmlns:toString="http://jaxb2-commons.dev.java.net/basic/toString"
+    xmlns:annox="http://annox.dev.java.net"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://java.sun.com/xml/ns/jaxb
+        http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd">
+    <jaxb:bindings schemaLocation="../xsd/guide.xsd" node="/xs:schema">
+        <jaxb:globalBindings collectionType="java.util.ArrayList"
+            generateValueClass="true">
+        </jaxb:globalBindings>
+        <jaxb:schemaBindings>
+            <jaxb:package name="by.vitsoft.material.dto.guide" />
+        </jaxb:schemaBindings>
+        <jaxb:bindings node="//xs:simpleType[@name='Class']">
+            <jaxb:javaType name="java.lang.Class"
+                parseMethod="by.vitsoft.material.jaxb.ClassConverter.parseClassName"
+                printMethod="by.vitsoft.material.jaxb.ClassConverter.printClass" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='LookUpInfo']">
+            <jaxb:bindings node=".//xs:attribute[@name='guideInfo']">
+                <jaxb:property name="guideInfo">
+                    <jaxb:baseType name="GuideInfo"/>
+                </jaxb:property>
+                <toString:ignored/>
+            </jaxb:bindings>
+            <jaxb:bindings node=".//xs:attribute[@name='lookUpGuideInfo']">
+                <!-- order is important -->
+                <jaxb:property name="lookUpGuideInfo">
+                    <jaxb:baseType name="GuideInfo"/>
+                </jaxb:property>
+                <toString:ignored/>
+            </jaxb:bindings>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Property']">
+            <jaxb:bindings node=".//xs:attribute[@name='lookUp']">
+                <!-- order is impotant -->
+                <toString:ignored/>
+                <jaxb:property name="lookUp">
+                    <jaxb:baseType name="LookUpInfo"/>
+                </jaxb:property>
+            </jaxb:bindings>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Guide']">
+            <inheritance:extends>by.vitsoft.material.dto.guide.AbstractGuide</inheritance:extends>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='BaseGuideInfo']">
+            <inheritance:extends>by.vitsoft.material.dto.guide.AbstractGuideInfo</inheritance:extends>
+        </jaxb:bindings>
+
+        <!-- Correct plural property names -->
+        <jaxb:bindings node="//xs:complexType[@name='PropertySet']//xs:sequence">
+            <jaxb:property name="properties"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='OrderSet']//xs:sequence">
+            <jaxb:property name="orders"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='GuideOptionSet']//xs:sequence">
+            <jaxb:property name="options"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Property']//xs:sequence">
+            <jaxb:property name="lookUps"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="xs:complexType[@name='BaseGuideInfo']/xs:sequence/xs:element[@name='propertySet']">
+            <annox:annotate>
+                <annox:annotate annox:class="org.codehaus.jackson.annotate.JsonIgnore" value="true" target="FIELD"/>
+            </annox:annotate>
+        </jaxb:bindings>
+        <!--
+            <jaxb:bindings
+            node="//xs:complexType[@name='CatalogProductType']">
+            <jaxb:class name="CatalogItemType">
+            <jaxb:javadoc><![CDATA[Sample class-level Javadoc
+            comment.]]></jaxb:javadoc> </jaxb:class> </jaxb:bindings>
+
+            <jaxb:bindings
+            node="//xs:complexType[@name='ErrorParameterType']">
+            <jaxb:bindings node=".//xs:element[@name='Value']">
+            <jaxb:property name="errorValue">
+            <jaxb:javadoc><![CDATA[Sample variable-level Javadoc
+            comment.]]></jaxb:javadoc> </jaxb:property> </jaxb:bindings>
+            <jaxb:bindings node=".//xs:attribute[@name='ParamID']">
+            <jaxb:property name="paramIdentifier" /> </jaxb:bindings>
+            </jaxb:bindings>
+        -->
+    </jaxb:bindings>
+</jaxb:bindings>

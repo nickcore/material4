@@ -32,9 +32,17 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!-- ibatis 2.3  -->
+    <!--
     <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
         <property name="configLocation" value="classpath:sqlmap-config.xml"/>
         <property name="dataSource" ref="dataSource"/>
+    </bean>
+    -->
+    <!-- mybatis 3.0  -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:sqlmap-config.xml"/>
     </bean>
 
     <!--

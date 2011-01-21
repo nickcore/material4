@@ -10,6 +10,8 @@ public class Material {
     private long materialId;
     private long materialName;
 
+    private Unit unit;
+
     public long getId() {
         return id;
     }
@@ -27,5 +29,11 @@ public class Material {
     }
     public void setMaterialName(long materialName) {
         this.materialName = materialName;
+    }
+    public Unit getUnit() {
+        return unit;
+    }
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

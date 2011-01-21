@@ -1,0 +1,45 @@
+.header_table {
+	width: 100%;
+}
+
+.header_logo_td {
+	
+}
+
+.header_panel {
+	width: 50%;
+}
+
+.header_panel_table {
+	border: 0px;
+	border-color: #0000ff;
+	border-style: solid;
+	border-collapse: collapse;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	height: "50px";
+	position: absolute;
+	top: 30px;
+	right: 10px;
+	font-size: 85%;
+}
+
+.header_panel_sp_td {
+	text-align: right;
+	border-style: solid;
+	border-right-width: 2px;
+	border-bottom-width: 0;
+	border-left-width: 0;
+	border-top-width: 0;
+	border-right-color: #165089;
+}
+
+.header_panel_td {
+	text-align: right;
+}
+
+.header_panel_td_bot {
+	text-align: right;
+}

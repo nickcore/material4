@@ -64,7 +64,7 @@ public class MyVaadinApplication extends Application {
         table.addContainerProperty("UnitName", String.class, null);
         table.setColumnHeader("UnitName", "Имя");
         // Add a few items in the table.
-        List<Unit> units =  guideService.getUnits();
+        List<Unit> units =  guideService.getUnits(null);
         for (Unit unit: units ) {
             table.addItem(new Object[] {unit.getId(), unit.getUnitId(), unit.getUnitName()},
                     unit.getId()); // Item identifier

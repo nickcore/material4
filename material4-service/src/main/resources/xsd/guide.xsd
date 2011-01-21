@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.vitsoft.by/guide" xmlns:gd="http://www.vitsoft.by/guide" elementFormDefault="qualified">
+
+    <element name="guide" type="gd:Guide"/>
+
+    <complexType name="Guide">
+        <choice minOccurs="0" maxOccurs="unbounded">
+            <element name="guideInfo" type="gd:GuideInfo"/>
+            <element name="operationalInfo" type="gd:OperationalInfo"/>
+            <element name="lookUpInfo" type="gd:LookUpInfo"/>
+        </choice>
+    </complexType>
+
+    <complexType name="BaseGuideInfo" abstract="true">
+        <sequence>
+            <element name="description" type="string"/>
+            <element name="propertySet" type="gd:PropertySet"/>
+            <element name="visiblePropertyNames" type="string"/>
+            <element name="popupPropertyNames" type="string" minOccurs="0" maxOccurs="1"/>
+            <element name="orderSet" type="gd:OrderSet"/>
+            <!--
+            <element name="orderPropertyName" type="string"/>
+            <element name="ordering" type="string"/>
+            -->
+        </sequence>
+        <attribute name="class" type="gd:Class"/>
+        <attribute name="id" type="ID"/>
+    </complexType>
+
+    <complexType name="GuideInfo">
+        <complexContent>
+            <extension base="gd:BaseGuideInfo">
+                <sequence>
+                    <element name="findProperty" type="string"/>
+                    <element name="genName" type="string" minOccurs="0" maxOccurs="1"/>
+                    <element name="defFilt" type="string" minOccurs="0" maxOccurs="1"/>
+                    <element name="optionSet" type="gd:GuideOptionSet"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <simpleType name="Class">
+        <restriction base="string"/>
+    </simpleType>
+
+    <complexType name="GuideOptionSet">
+        <sequence minOccurs="1" maxOccurs="unbounded">
+            <element name="option" type="gd:GuideOption"/>
+        </sequence>
+    </complexType>
+
+   <simpleType name="GuideOption">
+        <restriction base="string">
+            <!-- опции обычного спр -->
+            <enumeration value="Edit"/>
+            <enumeration value="Delete"/>
+            <enumeration value="Filt"/>
+            <enumeration value="Sort"/>
+            <enumeration value="Find"/>
+            <enumeration value="FindLocal"/>
+            <enumeration value="FiltLocal"/>
+            <enumeration value="SortLocal"/>
+            <enumeration value="FindStd"/>
+            <enumeration value="InFind"/>
+            <enumeration value="FindEnter"/>
+            <enumeration value="FiltNoCheck"/>
+            <enumeration value="SetParam"/>
+            <enumeration value="Multi"/>
+            <!-- опции древовидного спр -->
+            <enumeration value="Tree"/>
+            <!-- опции справочника с датой (для реестра платежных поручений, ТТН, ...)-->
+            <enumeration value="SprDt"/>
+            <enumeration value="SprDtInsert"/>
+            <enumeration value="SprDtOnlyDok"/>
+            <!-- вспомогательные опции -->
+            <enumeration value="FindRes"/>
+            <enumeration value="Res"/>
+            <enumeration value="AddNewElem"/>
+            <enumeration value="FindOnShow"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="PropertySet">
+        <sequence minOccurs="1" maxOccurs="unbounded">
+            <element name="property" type="gd:Property"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Property">
+        <sequence minOccurs="0" maxOccurs="unbounded">
+            <!--
+            <element name="lookUp" type="gd:LookUpInfoOrRef"/>
+            -->
+            <element name="lookUp" type="IDREF"/>
+        </sequence>
+        <attribute name="name" type="string"/>
+        <attribute name="displayName" type="string"/>
+        <attribute name="defValue" type="string"/>
+        <attribute name="width" type="short"/>
+        <attribute name="popupWidth" type="short"/>
+        <attribute name="lookUp" type="IDREF"/>
+    </complexType>
+
+    <complexType name="OrderSet">
+        <sequence minOccurs="1" maxOccurs="unbounded">
+            <element name="order" type="gd:Order"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Order">
+        <attribute name="property" type="string"/>
+        <attribute name="direction" type="gd:OrderDirection"/>
+    </complexType>
+
+   <simpleType name="OrderDirection">
+        <restriction base="string">
+            <enumeration value="Asc"/>
+            <enumeration value="Desc"/>
+        </restriction>
+    </simpleType>
+
+    <!--
+    <complexType name="LookUpInfoOrRef">
+        <choice>
+            <element name="guideInfo" type="gd:LookUpInfo" />
+            <element name="guideInfoRef" type="IDREF" />
+        </choice>
+    </complexType>
+    -->
+
+    <complexType name="OperationalInfo">
+        <complexContent>
+            <extension base="gd:BaseGuideInfo"/>
+        </complexContent>
+    </complexType>
+
+    <complexType name="LookUpInfo">
+        <sequence>
+            <element name="propertyName" type="string"/>
+            <element name="resPropertyNames" type="string"/>
+            <element name="lookUpResPropertyNames" type="string"/>
+            <element name="resCount" type="short"/>
+            <element name="changeQuery" type="string" minOccurs="0" maxOccurs="1"/>
+            <element name="defFilt" type="string" minOccurs="0" maxOccurs="1"/>
+            <element name="showCheck" type="string" minOccurs="0" maxOccurs="1"/>
+            <element name="multiCheck" type="string" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+        <attribute name="id" type="ID"/>
+        <attribute name="guideInfo" type="IDREF" />
+        <attribute name="lookUpGuideInfo" type="IDREF" />
+    </complexType>
+</schema>

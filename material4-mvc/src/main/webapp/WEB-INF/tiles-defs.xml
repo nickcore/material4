@@ -6,7 +6,24 @@
 
 <tiles-definitions>
 
-    <definition name=".login" template="/WEB-INF/jsp/login.jsp"/>
+    <definition name="base.layout" template="/WEB-INF/jsp/tiles/baselayout.jsp">
+        <put-attribute name="pageTitle" value="Login" />
+        <put-attribute name="header" value="/WEB-INF/jsp/tiles/header.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/jsp/tiles/menu.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/tiles/footer.jsp" />
+    </definition>
+
+    <definition name="login" extends="base.layout">
+        <put-attribute name="pageTitle" value="Login"/>
+        <put-attribute name="menu" value=""/>
+        <put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+    </definition>
+
+    <definition name="unit" extends="base.layout">
+        <put-attribute name="pageTitle" value="Unit"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/unit.jsp" />
+    </definition>
 
     <!--
     <definition name=".base.layout" template="/WEB-INF/jsp/tiles/layout.jsp">
@@ -19,7 +36,7 @@
         <put-attribute name="title" value="welcome.title" />
         <put-attribute name="body" value="/WEB-INF/jsp/welcome.jsp" />
     </definition>
-
+"material4-mvc/src/main/webapp/WEB-INF/jsp/layouts/baselayout.jsp"
     <definition name=".user.edit" extends=".base.layout">
         <put-attribute name="title" value="user.edit.title" />
         <put-attribute name="body" value="/WEB-INF/jsp/userEdit.jsp" />
