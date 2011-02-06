@@ -34,7 +34,7 @@
         <level value="DEBUG" />
     </logger>
 
-    <logger name="org.springframework.security">
+    <logger name="org.springframework.web">
         <level value="DEBUG" />
     </logger>
 

@@ -32,6 +32,9 @@
             <script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
             <script src="js/i18n/grid.locale-ru.js" type="text/javascript"></script>
             <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+            <%--
+            <script src="js/json2.js" type="text/javascript"></script>
+            --%>
 
             <script src="js/jquery.blockUI.js" type="text/javascript"></script>
             <script src="js/hoverIntent.js" type="text/javascript"></script>

@@ -9,7 +9,7 @@ public class BaseFilter {
      * after that the index from colModel */
     String sidx;
     /** Sorting order - at first time sortorder */
-    String sort;
+    String sord;
 
     
 
@@ -17,7 +17,7 @@ public class BaseFilter {
         this.page = page;
         this.rows = rows;
         this.sidx = sidx;
-        this.sort = sort;
+        this.sord = sort;
     }
     public Integer getPage() {
         return page;
@@ -37,11 +37,11 @@ public class BaseFilter {
     public void setSidx(String sidx) {
         this.sidx = sidx;
     }
-    public String getSort() {
-        return sort;
+    public String getSord() {
+        return sord;
     }
-    public void setSort(String sort) {
-        this.sort = sort;
+    public void setSord(String sord) {
+        this.sord = sord;
     }
 
 }

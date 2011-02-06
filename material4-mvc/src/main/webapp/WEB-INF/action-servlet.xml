@@ -35,13 +35,15 @@
         </property>
     </bean>
 
+    <!--
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+    -->
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
-        <list>
-            <bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-                <constructor-arg ref="marshaller"/>
-            </bean>
-        </list>
+            <list>
+                <ref bean="jsonConverter" />
+                <ref bean="marshallingConverter" />
+            </list>
         </property>
     </bean>
 
@@ -99,4 +101,28 @@
         <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
     </bean>
 
+    <!-- message converters -->
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <bean class="org.springframework.http.MediaType" factory-method="parseMediaType">
+                    <constructor-arg value="application/json"/>
+                </bean>
+                <bean class="org.springframework.http.MediaType" factory-method="parseMediaType">
+                    <constructor-arg value="application/json;charset=UTF-8"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <constructor-arg ref="marshaller" />
+        <property name="supportedMediaTypes" value="application/xml" />
+    </bean>
+
+    <!-- 
+    <bean id="atomConverter" class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/atom+xml" />
+    </bean>
+    -->
 </beans>

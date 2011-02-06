@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.testng.Assert;
@@ -15,6 +14,8 @@ import org.testng.annotations.Test;
 import by.vitsoft.material.dto.Unit;
 import by.vitsoft.material.dto.guide.GuideInfo;
 import by.vitsoft.material.dto.guide.Property;
+import by.vitsoft.material.dto.response.BaseResponse;
+import by.vitsoft.material.filter.BaseFilter;
 
 @Test
 @ContextConfiguration(locations={"classpath:spring-dao.xml", "classpath:spring-service.xml"})
@@ -54,6 +55,9 @@ public class GuideServiceIntegrationTest extends AbstractTransactionalTestNGSpri
         Assert.assertNotNull(unit.getId());
         unit.setUnitName(unit.getUnitName() + 2);
         guideService.updateGuide("unit", unit);
+        BaseResponse<Unit> response = guideService.getUnits(new BaseFilter(2, 10, "unitName", "asc"));
+        LOG.debug(response.toString());
+
         guideService.deleteGuide("unit", unit.getId());
     }
 }

@@ -12,6 +12,16 @@
         select * from T7_EI
     </select>
 
+    <select id="selectUnitCount" resultType="long">
+        select count(*) from t7_ei
+    </select>
+
+    <select id="selectUnits" resultMap="UnitResult" parameterType="java.util.Map">
+        select * from t7_ei
+        order by ${scolumn} ${scollate} ${sord}
+        rows #{start} to #{end}
+    </select>
+
     <insert id="insertUnit" parameterType="Unit">
         <selectKey resultType="long" order="BEFORE" keyProperty="id">
             <![CDATA[select gen_id(g7_ei, 1) as id from rdb$database]]>

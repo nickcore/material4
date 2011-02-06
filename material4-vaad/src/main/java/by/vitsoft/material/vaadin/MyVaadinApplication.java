@@ -16,6 +16,7 @@
 package by.vitsoft.material.vaadin;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -64,7 +65,7 @@ public class MyVaadinApplication extends Application {
         table.addContainerProperty("UnitName", String.class, null);
         table.setColumnHeader("UnitName", "Имя");
         // Add a few items in the table.
-        List<Unit> units =  guideService.getUnits(null);
+        Collection<Unit> units =  guideService.getUnits(null).getData();
         for (Unit unit: units ) {
             table.addItem(new Object[] {unit.getId(), unit.getUnitId(), unit.getUnitName()},
                     unit.getId()); // Item identifier
