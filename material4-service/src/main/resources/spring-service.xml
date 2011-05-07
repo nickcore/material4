@@ -24,6 +24,8 @@
 
     <oxm:jaxb2-marshaller id="marshaller" contextPath="by.vitsoft.material.dto.guide"/>
 
+    <bean id="objectMapper" class="by.vitsoft.material.jaxb.jackson.ObjectMapperFactory" factory-method="createMapper"/>
+
     <!--
     <bean id="securityService" class="com.epam.vgutrn.service.SecurityServiceJdbcImpl">
         <property name="dataSource" ref="dataSource"/>

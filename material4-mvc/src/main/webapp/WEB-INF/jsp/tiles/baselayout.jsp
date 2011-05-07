@@ -16,6 +16,7 @@
             <link href="css/smoothness/jquery-ui-1.8.4.custom.css" rel="stylesheet" type="text/css" />
  --%>
             <link href="css/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+            <link href="css/jquery.jnotify.css" rel="stylesheet" type="text/css" />
 
             <link href="css/jdMenu.css" rel="stylesheet" type="text/css"/>
             <link href="css/superfish.css" rel="stylesheet" type="text/css"/>
@@ -32,7 +33,10 @@
             <script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
             <script src="js/i18n/grid.locale-ru.js" type="text/javascript"></script>
             <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+            <script src="js/jquery.jnotify.js" type="text/javascript"></script>
             <%--
+            <script src="js/src/grid.loader.js" type="text/javascript"></script>
+
             <script src="js/json2.js" type="text/javascript"></script>
             --%>
 

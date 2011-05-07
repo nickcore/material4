@@ -1,9 +1,15 @@
 package by.vitsoft.material.service;
 
+import static java.util.Arrays.asList;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
@@ -16,6 +22,10 @@ import by.vitsoft.material.dto.guide.GuideInfo;
 import by.vitsoft.material.dto.guide.Property;
 import by.vitsoft.material.dto.response.BaseResponse;
 import by.vitsoft.material.filter.BaseFilter;
+import by.vitsoft.material.filter.GroupOp;
+import by.vitsoft.material.filter.Rule;
+import by.vitsoft.material.filter.RuleOp;
+import by.vitsoft.material.filter.RuleSet;
 
 @Test
 @ContextConfiguration(locations={"classpath:spring-dao.xml", "classpath:spring-service.xml"})
@@ -28,6 +38,8 @@ public class GuideServiceIntegrationTest extends AbstractTransactionalTestNGSpri
     Logger LOG = Logger.getLogger(GuideServiceIntegrationTest.class);
     @Autowired
     private GuideService guideService;
+
+    @Autowired ObjectMapper mapper;
 
     @Test
     public void testInit() {
@@ -55,9 +67,32 @@ public class GuideServiceIntegrationTest extends AbstractTransactionalTestNGSpri
         Assert.assertNotNull(unit.getId());
         unit.setUnitName(unit.getUnitName() + 2);
         guideService.updateGuide("unit", unit);
-        BaseResponse<Unit> response = guideService.getUnits(new BaseFilter(2, 10, "unitName", "asc"));
+        BaseFilter filter = new BaseFilter(2, 10, "unitName", "asc", 
+                new RuleSet(GroupOp.AND, asList(new Rule("unitName", RuleOp.EQUAL, "шт"))));
+        BaseResponse<Unit> response = guideService.getUnits(filter);
         LOG.debug(response.toString());
 
         guideService.deleteGuide("unit", unit.getId());
+    }
+
+    @Test
+    public void testFilter() throws JsonGenerationException, JsonMappingException, IOException {
+        LOG.debug("Test JSON serialization of deserialization of the filter");
+
+
+        List<Rule> rules = asList(new Rule("unitName", RuleOp.EQUAL, "шт"));
+        RuleSet rs = new RuleSet(GroupOp.AND, rules);
+        BaseFilter filter = new BaseFilter(2, 10, "unitName", "asc", rs);
+        LOG.debug(mapper.writeValueAsString(filter));
+
+        String rsString = "{\"groupOp\":\"AND\",\n"
+            + "\"rules\":[\n"
+            + "     {\"field\":\"invdate\",\"op\":\"ge\",\"data\":\"2007-10-06\"},\n"
+            + "     {\"field\":\"invdate\",\"op\":\"le\",\"data\":\"2007-10-20\"},\n" 
+            + "     {\"field\":\"name\",\"op\":\"bw\",\"data\":\"Client 3\"}\n"
+            +"]}\n";
+        LOG.debug(rsString);
+        rs = mapper.readValue(rsString, RuleSet.class);
+        LOG.debug(rs);
     }
 }

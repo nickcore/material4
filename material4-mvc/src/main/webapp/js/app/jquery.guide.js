@@ -10,7 +10,8 @@
                     del: "/api/{guide}/delete.json",
                     edit: "/api/{guide}/edit.json"
                 },
-                pager: "#pager"
+                pager: "#pager",
+                notification: "#notification"
         },  opts = $.extend(defaults, options), GUIDE_EXPR = /\{guide\}/g;
         for (var url in opts.urls) {
             opts.urls[url] = new String(opts.urls[url]).replace(GUIDE_EXPR, opts.guide);
@@ -55,15 +56,15 @@
                     });
                     $($this).jqGrid('navGrid', opts.pager,
                         {edit:false,add:false,del:false,search:true},
-                        { },
-                        { },
-                        { },
+                        {closeAfterEdit: true}, // edit options
+                        {closeAfterAdd: true}, // add options
+                        { }, // del options
                         {
                             sopt:['eq', 'ne', 'lt', 'gt', 'cn', 'bw', 'ew'],
                             closeOnEscape: true,
                             multipleSearch: true,
                             closeAfterSearch: true
-                        }
+                        } // search options
                     );
                     $($this).navButtonAdd(opts.pager,
                         { caption:"Add",
@@ -109,9 +110,12 @@
                                 },
                                 serializeEditData: function (postData) {
                                     // just to put all parameters inside one object $.parseJSON
-                                    postData.id = null;
-                                    delete postData.oper;
-                                    return JSON.stringify(postData);
+                                    //postData.id = null;
+                                    //delete postData.oper;
+                                    var sendData = $.extend({}, postData);
+                                    sendData.id = null;
+                                    delete sendData.oper;
+                                    return JSON.stringify(sendData);
                                 },
         
                                 /*editData: { },
@@ -122,8 +126,9 @@
                                 closeAfterAdd: true,
                                 reloadAfterSubmit:false,
                                 afterSubmit : function(response, postdata) {
+                                    var result = $.parseJSON(response.responseText);
                                     /*
-                                    var result = eval('(' + response.responseText + ')');
+                                    
                                     var errors = "";
                                     
                                     if (result.success == false) {
@@ -145,9 +150,11 @@
         
                                     return [result.success, errors, new_id];
                                     */
-                                    alert(response.toSource());
-        
-                                    return [true, "", response.unitId]
+                                    $($guide.opts.notification).jnotifyAddMessage({
+                                        text: 'This is a non permanent message.\n' + result.toSource(),
+                                        permanent: false
+                                    });
+                                    return [true, "Test", result.id]
                                 }
                     });
                 },

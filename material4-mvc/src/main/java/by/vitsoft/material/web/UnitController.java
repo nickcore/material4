@@ -3,7 +3,12 @@ package by.vitsoft.material.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,14 +32,24 @@ public class UnitController {
         return model;
     }
 
+
+    //https://material.vitsoft.by:8443/units.json?page=1&rows=10&sidx=id&sord=asc
     @RequestMapping(value="/units", method = RequestMethod.GET)
     BaseResponse<Unit> getUnits(@RequestParam(value = "page") int page, @RequestParam(value = "rows") int rows,
             @RequestParam(value = "sidx") String sidx, @RequestParam(value = "sord") String sord) {
         BaseFilter filter = new BaseFilter(page, rows, sidx, sord);
         return guideService.getUnits(filter);
-        //return new GridDataHolder<Unit>(1L, 1L, units.size(), units);
-        //return new ModelAndView("xmlView", "units", guideService.getUnits().get(0));
     }
+
+    /*
+    @RequestMapping(value="/units", method = RequestMethod.GET)
+    ModelMap getUnits(@RequestBody BaseFilter filter) { //, BindingResult bindingResult
+        return new ModelMap(guideService.getUnits(filter));
+        //ModelMap model = new ModelMap("baseFilter", filter);
+        //model.put("baseResponse", guideService.getUnits(filter));
+        //return model;
+    }
+    */
 
 
 }

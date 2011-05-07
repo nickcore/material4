@@ -12,12 +12,56 @@
         select * from T7_EI
     </select>
 
-    <select id="selectUnitCount" resultType="long">
+    <sql id="guideFilter">
+        <where>
+            <if test="ruleSet != null and ruleSet.rules != null">
+                <foreach item="rule" collection="ruleSet.rules" open="(" close=")">
+                    <choose>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@EQUAL">
+                            ${rule.column} = #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@NOT_EQUAL">
+                            ${rule.column} != #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@LT">
+                            ${rule.column} <![CDATA[<]]> #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@LE">
+                            ${rule.column} <![CDATA[<=]]> #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@GT">
+                            ${rule.column} <![CDATA[>]]> #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@GE">
+                            ${rule.column} <![CDATA[>=]]> #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@BEGINS_WITH">
+                            ${rule.column} starting with #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@NOT_BEGIN_WITH">
+                            ${rule.column} not starting with #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@CONTAINS">
+                            ${rule.column} containing #{rule.data}
+                        </when>
+                        <when test="rule.op == @by.vitsoft.material.filter.RuleOp@NOT_CONTAINS">
+                            ${rule.column} not containing #{rule.data}
+                        </when>
+                        
+                    </choose>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectUnitCount" resultType="long" parameterType="java.util.Map">
         select count(*) from t7_ei
+        <include refid="guideFilter"/>
     </select>
 
     <select id="selectUnits" resultMap="UnitResult" parameterType="java.util.Map">
         select * from t7_ei
+        <include refid="guideFilter"/>
         order by ${scolumn} ${scollate} ${sord}
         rows #{start} to #{end}
     </select>

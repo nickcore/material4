@@ -35,6 +35,8 @@
         </property>
     </bean>
 
+    <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper"/>
+
     <!--
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
     -->

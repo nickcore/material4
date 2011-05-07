@@ -1,6 +1,8 @@
 package by.vitsoft.material.service;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.XmlMappingException;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import by.vitsoft.material.dto.Unit;
 import by.vitsoft.material.dto.guide.Guide;
 import by.vitsoft.material.dto.response.BaseResponse;
 import by.vitsoft.material.filter.BaseFilter;
+import by.vitsoft.material.filter.Rule;
 
 //ibatis 2.3
 //SqlMapClientDaoSupport
@@ -67,12 +71,30 @@ public class GuideServiceImpl extends SqlSessionDaoSupport implements GuideServi
     public BaseResponse<Unit> getUnits(BaseFilter filter) {
         ResultMap rm = getSqlSession().getConfiguration().getResultMap("Guide.UnitResult");
 
+        //convert property name to column name
+        Map<String, Rule> rules = new HashMap<String, Rule>();
+        if (!CollectionUtils.isEmpty(filter.getRuleSet().getRules())) {
+            for (Rule rule : filter.getRuleSet().getRules()) {
+                rules.put(rule.getField(), rule);
+            }
+        }
+        for (ResultMapping item : rm.getResultMappings()) {
+            Rule rule = rules.get(item.getProperty());
+            if (rule != null) {
+                rule.setColumn(item.getColumn());
+            }
+        }
+
+        //prepare params
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ruleSet", filter.getRuleSet());
+
          // Get the requested page. By default grid sets this to 1. 
         long page = filter.getPage(); 
         // get how many rows we want to have into the grid - rowNum parameter in the grid
         long limit = filter.getRows();
         // calculate the number of rows for the query. We need this for paging the result
-        long count = (Long) getSqlSession().selectOne("Guide.selectUnitCount");
+        long count = (Long) getSqlSession().selectOne("Guide.selectUnitCount", params);
         // calculate the total pages for the query
         long totalPages;
         if(count > 0 && limit > 0) { 
@@ -104,15 +126,15 @@ public class GuideServiceImpl extends SqlSessionDaoSupport implements GuideServi
             }
         }
 
-        Map<String, Object> params = new HashMap<String, Object>();
+
         params.put("start", start);
         params.put("end", end);
         params.put("scolumn", scolumn);
         params.put("scollate", scollate);
         params.put("sord", filter.getSord());
 
-        List units = getSqlSession().selectList("Guide.selectUnits", params);
-        return new BaseResponse<Unit>(page, totalPages, count, units) ;
+        List<Unit> units = count >0 ? getSqlSession().selectList("Guide.selectUnits", params) : Collections.emptyList();
+        return new BaseResponse<Unit>(page, totalPages, count, units);
     }
 
 
