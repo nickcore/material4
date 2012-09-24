@@ -18,15 +18,16 @@
             <jaxb:package name="by.vitsoft.material.dto.guide" />
         </jaxb:schemaBindings>
         <jaxb:bindings node="//xs:simpleType[@name='Class']">
-            <jaxb:javaType name="java.lang.Class"
-                parseMethod="by.vitsoft.material.jaxb.ClassConverter.parseClassName"
-                printMethod="by.vitsoft.material.jaxb.ClassConverter.printClass" />
+            <xjc:javaType adapter="by.vitsoft.material.jaxb.ClassConverter" name="java.lang.Class"/>
         </jaxb:bindings>
         <jaxb:bindings node="//xs:complexType[@name='LookUpInfo']">
             <jaxb:bindings node=".//xs:attribute[@name='guideInfo']">
                 <jaxb:property name="guideInfo">
                     <jaxb:baseType name="GuideInfo"/>
                 </jaxb:property>
+                <annox:annotate>
+                    <annox:annotate annox:class="org.codehaus.jackson.annotate.JsonIgnore" value="true" target="FIELD"/>
+                </annox:annotate>
                 <toString:ignored/>
             </jaxb:bindings>
             <jaxb:bindings node=".//xs:attribute[@name='lookUpGuideInfo']">
@@ -49,8 +50,11 @@
         <jaxb:bindings node="//xs:complexType[@name='Guide']">
             <inheritance:extends>by.vitsoft.material.dto.guide.AbstractGuide</inheritance:extends>
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:complexType[@name='BaseGuideInfo']">
+         <jaxb:bindings node="//xs:complexType[@name='BaseGuideInfo']">
             <inheritance:extends>by.vitsoft.material.dto.guide.AbstractGuideInfo</inheritance:extends>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Property']">
+            <inheritance:extends>by.vitsoft.material.dto.guide.AbstractProperty</inheritance:extends>
         </jaxb:bindings>
 
         <!-- Correct plural property names -->
@@ -63,8 +67,14 @@
         <jaxb:bindings node="//xs:complexType[@name='GuideOptionSet']//xs:sequence">
             <jaxb:property name="options"/>
         </jaxb:bindings>
+
+        <!-- Correct name for futher provessing -->
         <jaxb:bindings node="//xs:complexType[@name='Property']//xs:sequence">
-            <jaxb:property name="lookUps"/>
+            <jaxb:property name="lookUpElements">
+                <!--
+                <jaxb:baseType name="LookUpInfo"/>
+                -->
+            </jaxb:property>
         </jaxb:bindings>
 
         <jaxb:bindings node="xs:complexType[@name='BaseGuideInfo']/xs:sequence/xs:element[@name='propertySet']">
@@ -72,6 +82,14 @@
                 <annox:annotate annox:class="org.codehaus.jackson.annotate.JsonIgnore" value="true" target="FIELD"/>
             </annox:annotate>
         </jaxb:bindings>
+        <!--
+        <jaxb:bindings node="xs:complexType[@name='Property']/xs:sequence/xs:element[@name='lookUp']">
+            <annox:annotate target="field">
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlElementRef"/>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlIDREF"/>
+            </annox:annotate>
+        </jaxb:bindings>
+        -->
         <!--
             <jaxb:bindings
             node="//xs:complexType[@name='CatalogProductType']">

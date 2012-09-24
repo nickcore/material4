@@ -30,12 +30,12 @@
             <property name="id" displayName="ИД"/>
             <property name="materialId" displayName="Код" width="5"/>
             <property name="materialName" displayName="Материал" width="25"/>
-            <property name="unit.id" displayName="ИД еи"><lookUp>material-unit</lookUp></property>
-            <property name="unit.unitId" displayName="Код еи" width="5"/>
+            <property name="unit.id" displayName="ИД еи"/>
+            <property name="unit.unitId" displayName="Код еи" width="5"><lookUp>material-unit</lookUp></property>
             <property name="unit.unitName" displayName="Еденица изм." width="15"/>
-            <property/>
+            <property name="accountId" displayName="Счет" width="10"/>
         </propertySet>
-        <visiblePropertyNames>materialId,materialName,unit.unitId,unit.unitName</visiblePropertyNames>
+        <visiblePropertyNames>materialId,materialName,unit.unitId,unit.unitName,accountId</visiblePropertyNames>
         <popupPropertyNames>materialId,materialName,unit.unitName</popupPropertyNames>
         <orderSet>
             <order property="materialName" direction="Asc" />

@@ -27,7 +27,7 @@
             'z-index' : '9999'
         });
         jQuery("#list").jqGuide( {
-            guide : "unit"
+            guide : "material"
         });
     });
 </script>

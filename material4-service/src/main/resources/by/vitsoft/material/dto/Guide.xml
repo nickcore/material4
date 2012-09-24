@@ -3,14 +3,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="Guide">
     <resultMap id="UnitResult" type="Unit">
-        <id property="id" column="cd"/>
+        <id property="id" column="cd_ei"/>
         <result property="unitId" column="ei_k"/>
         <result property="unitName" column="ei_i"/>
     </resultMap>
 
-    <select id="selectAllUnits" resultMap="UnitResult">
-        select * from T7_EI
-    </select>
+    <resultMap id="MaterialResult" type="Material">
+        <id property="id" column="cd_mat"/>
+        <result property="materialId" column="mat_k"/>
+        <result property="materialName" column="mat_i"/>
+        <result property="accountId" column="cd_sch"/>
+        <association property="unit" resultMap="Guide.UnitResult"/>
+    </resultMap>
 
     <sql id="guideFilter">
         <where>
@@ -60,7 +64,7 @@
     </select>
 
     <select id="selectUnits" resultMap="UnitResult" parameterType="java.util.Map">
-        select * from t7_ei
+        select ei.cd cd_ei, ei.ei_k, ei.ei_i from t7_ei ei
         <include refid="guideFilter"/>
         order by ${scolumn} ${scollate} ${sord}
         rows #{start} to #{end}
@@ -84,6 +88,42 @@
 
     <delete id="deleteUnit" parameterType="long">
         delete from t7_ei where cd = #{id}
+    </delete>
+
+    <select id="selectMaterialCount" resultType="long" parameterType="java.util.Map">
+        select count(*) from t05017_mat
+        <include refid="guideFilter"/>
+    </select>
+
+    <select id="selectMaterials" resultMap="MaterialResult" parameterType="java.util.Map">
+        select m.cd cd_mat, m.mat_k, m.mat_i, m.cd_sch, m.cd_ei, ei.ei_k, ei.ei_i
+        from t05017_mat m
+        left join t7_ei ei on ei.cd = m.cd_ei
+        <include refid="guideFilter"/>
+        order by ${scolumn} ${scollate} ${sord}
+        rows #{start} to #{end}
+    </select>
+
+    <insert id="insertMaterial" parameterType="Material">
+        <selectKey resultType="long" order="BEFORE" keyProperty="id">
+            <![CDATA[select gen_id(g05017_mat, 1) as id from rdb$database]]>
+        </selectKey>
+        insert into t05017_mat (cd, mat_k, mat_i, cd_ei, cd_sch)
+        values (#{id}, #{materialId}, #{materialName}, #{unit.id}, #{accountId})
+    </insert>
+
+    <update id="updateMaterial" parameterType="Material">
+        update t05017_mat set
+          mat_k = #{materialId},
+          mat_i = #{materialName},
+          cd_ei = #{unit.id},
+          cd_sch = #{accountId}
+        where
+          cd = #{id}
+    </update>
+
+    <delete id="deleteMaterial" parameterType="long">
+        delete from t05017_mat where cd = #{id}
     </delete>
 </mapper>
 <!--

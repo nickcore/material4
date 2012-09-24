@@ -17,6 +17,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import by.vitsoft.material.dto.Material;
 import by.vitsoft.material.dto.Unit;
 import by.vitsoft.material.dto.guide.GuideInfo;
 import by.vitsoft.material.dto.guide.Property;
@@ -69,12 +70,30 @@ public class GuideServiceIntegrationTest extends AbstractTransactionalTestNGSpri
         guideService.updateGuide("unit", unit);
         BaseFilter filter = new BaseFilter(2, 10, "unitName", "asc", 
                 new RuleSet(GroupOp.AND, asList(new Rule("unitName", RuleOp.EQUAL, "шт"))));
-        BaseResponse<Unit> response = guideService.getUnits(filter);
+        BaseResponse<Unit> response = guideService.getGuides("unit", filter);
         LOG.debug(response.toString());
 
         guideService.deleteGuide("unit", unit.getId());
     }
 
+    @Test
+    public void testMaterial() {
+        Material material = new Material();
+        material.setMaterialId(600300L);
+        material.setMaterialName("Конь педальный");
+        guideService.insertGuide("material", material);
+        Assert.assertNotNull(material.getId());
+        material.setMaterialName(material.getMaterialName() + 2);
+        guideService.updateGuide("material", material);
+        BaseFilter filter = new BaseFilter(2, 10, "materialName", "asc", 
+                new RuleSet(GroupOp.AND, asList(new Rule("materialName", RuleOp.CONTAINS, "пед"))));
+        BaseResponse<Unit> response = guideService.getGuides("material", filter);
+        LOG.debug(response.toString());
+
+        guideService.deleteGuide("material", material.getId());
+    }
+
+    
     @Test
     public void testFilter() throws JsonGenerationException, JsonMappingException, IOException {
         LOG.debug("Test JSON serialization of deserialization of the filter");

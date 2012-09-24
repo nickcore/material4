@@ -1,13 +1,13 @@
 package by.vitsoft.material.dto.guide;
 
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.Unmarshaller;
 
 
-public abstract class AbstractGuideInfo {
+public abstract class AbstractGuideInfo implements Serializable {
     private Map<String, Property> properties = new HashMap<String, Property>();
 
     public Map<String, Property> getProperties() {

@@ -3,6 +3,7 @@
 <configuration>
     <typeAliases>
         <typeAlias alias="Unit" type="by.vitsoft.material.dto.Unit"/>
+        <typeAlias alias="Material" type="by.vitsoft.material.dto.Material"/>
     </typeAliases>
     <mappers>
         <mapper resource="by/vitsoft/material/dto/Guide.xml"/>

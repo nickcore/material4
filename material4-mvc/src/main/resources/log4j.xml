@@ -5,8 +5,7 @@
 
 	<!-- File appender definition  -->
     <appender name="material4" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="${catalina.base}/logs/helpdesk.log" />
-        <param name="File" value="helpdesk.log" />
+        <param name="File" value="${catalina.base}/logs/material4.log" />
         <param name="Append" value="true" />
         <param name="MaxFileSize" value="10MB" />
         <param name="MaxBackupIndex" value="10" />

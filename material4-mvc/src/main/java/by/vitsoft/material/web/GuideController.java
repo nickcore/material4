@@ -3,15 +3,12 @@ package by.vitsoft.material.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import by.vitsoft.material.dto.Unit;
 import by.vitsoft.material.dto.guide.GuideInfo;
 import by.vitsoft.material.dto.response.BaseResponse;
+import by.vitsoft.material.filter.BaseFilter;
 import by.vitsoft.material.service.GuideService;
 
 @Controller
@@ -26,13 +23,19 @@ public class GuideController {
     }
 
     @RequestMapping(value="/{guide}/list", method = RequestMethod.GET)
-    BaseResponse<Unit> getGuideList(@PathVariable String guide) {
-        //GuideInfo info = guideService.getConfig().getGuideInfos().get(guide);
-        return guideService.getUnits(null);
+    BaseResponse<Unit> getGuideList(@PathVariable String guide, @RequestParam(value = "page") int page,
+        @RequestParam(value = "rows") int rows, @RequestParam(value = "sidx") String sidx, @RequestParam(value = "sord") String sord) {
+        BaseFilter filter = new BaseFilter(page, rows, sidx, sord);
+        return guideService.getGuides(guide, filter);
     }
 
     @RequestMapping(value="/unit/add", method = RequestMethod.POST)
     @ResponseBody Unit addUnit(@RequestBody Unit unit) {
         return guideService.insertGuide("unit", unit);
+    }
+
+    @RequestMapping(value="/unit/update", method = RequestMethod.POST)
+    void updateUnit(@RequestBody Unit unit) {
+        guideService.updateGuide("unit", unit);
     }
 }

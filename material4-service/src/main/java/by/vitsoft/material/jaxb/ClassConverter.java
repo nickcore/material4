@@ -1,6 +1,8 @@
 package by.vitsoft.material.jaxb;
 
-final public class ClassConverter {
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+final public class ClassConverter extends XmlAdapter<String, Class> {
 
     /**
      * <p>
@@ -32,5 +34,15 @@ final public class ClassConverter {
             throw new IllegalArgumentException("Class is null");
         }
         return val.toString();
+    }
+
+    @Override
+    public Class unmarshal(String v) throws Exception {
+        return parseClassName(v);
+    }
+
+    @Override
+    public String marshal(Class v) throws Exception {
+        return printClass(v);
     }
 }

@@ -1,7 +1,6 @@
 package by.vitsoft.material.service;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +21,12 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import by.vitsoft.material.dto.Unit;
 import by.vitsoft.material.dto.guide.Guide;
 import by.vitsoft.material.dto.response.BaseResponse;
 import by.vitsoft.material.filter.BaseFilter;
 import by.vitsoft.material.filter.Rule;
+
+import static java.text.MessageFormat.format;
 
 //ibatis 2.3
 //SqlMapClientDaoSupport
@@ -68,12 +68,13 @@ public class GuideServiceImpl extends SqlSessionDaoSupport implements GuideServi
    }
 
     @SuppressWarnings("unchecked")
-    public BaseResponse<Unit> getUnits(BaseFilter filter) {
-        ResultMap rm = getSqlSession().getConfiguration().getResultMap("Guide.UnitResult");
+    public <T> BaseResponse<T> getGuides(String guideId, BaseFilter filter) {
+        String guideIdCap = StringUtils.capitalize(guideId);
+        ResultMap rm = getSqlSession().getConfiguration().getResultMap(format("Guide.{0}Result", guideIdCap));
 
         //convert property name to column name
         Map<String, Rule> rules = new HashMap<String, Rule>();
-        if (!CollectionUtils.isEmpty(filter.getRuleSet().getRules())) {
+        if (filter.getRuleSet() != null && !CollectionUtils.isEmpty(filter.getRuleSet().getRules())) {
             for (Rule rule : filter.getRuleSet().getRules()) {
                 rules.put(rule.getField(), rule);
             }
@@ -94,7 +95,7 @@ public class GuideServiceImpl extends SqlSessionDaoSupport implements GuideServi
         // get how many rows we want to have into the grid - rowNum parameter in the grid
         long limit = filter.getRows();
         // calculate the number of rows for the query. We need this for paging the result
-        long count = (Long) getSqlSession().selectOne("Guide.selectUnitCount", params);
+        long count = (Long) getSqlSession().selectOne(format("Guide.select{0}Count", guideIdCap), params);
         // calculate the total pages for the query
         long totalPages;
         if(count > 0 && limit > 0) { 
@@ -126,15 +127,15 @@ public class GuideServiceImpl extends SqlSessionDaoSupport implements GuideServi
             }
         }
 
-
+        
         params.put("start", start);
         params.put("end", end);
         params.put("scolumn", scolumn);
         params.put("scollate", scollate);
         params.put("sord", filter.getSord());
 
-        List<Unit> units = count >0 ? getSqlSession().selectList("Guide.selectUnits", params) : Collections.emptyList();
-        return new BaseResponse<Unit>(page, totalPages, count, units);
+        List<T> units = count >0 ? getSqlSession().selectList(format("Guide.select{0}s", guideIdCap), params) : Collections.emptyList();
+        return new BaseResponse<T>(page, totalPages, count, units);
     }
 
 

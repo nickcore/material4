@@ -38,15 +38,15 @@ public class UnitController {
     BaseResponse<Unit> getUnits(@RequestParam(value = "page") int page, @RequestParam(value = "rows") int rows,
             @RequestParam(value = "sidx") String sidx, @RequestParam(value = "sord") String sord) {
         BaseFilter filter = new BaseFilter(page, rows, sidx, sord);
-        return guideService.getUnits(filter);
+        return guideService.getGuides("unit", filter);
     }
 
     /*
     @RequestMapping(value="/units", method = RequestMethod.GET)
     ModelMap getUnits(@RequestBody BaseFilter filter) { //, BindingResult bindingResult
-        return new ModelMap(guideService.getUnits(filter));
+        return new ModelMap(guideService.getGuides(filter));
         //ModelMap model = new ModelMap("baseFilter", filter);
-        //model.put("baseResponse", guideService.getUnits(filter));
+        //model.put("baseResponse", guideService.getGuides(filter));
         //return model;
     }
     */

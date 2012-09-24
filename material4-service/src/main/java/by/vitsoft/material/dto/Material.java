@@ -8,8 +8,9 @@ package by.vitsoft.material.dto;
 public class Material {
     private long id;
     private long materialId;
-    private long materialName;
-
+    private String materialName;
+    private String accountId;
+    
     private Unit unit;
 
     public long getId() {
@@ -24,10 +25,10 @@ public class Material {
     public void setMaterialId(long materialId) {
         this.materialId = materialId;
     }
-    public long getMaterialName() {
+    public String getMaterialName() {
         return materialName;
     }
-    public void setMaterialName(long materialName) {
+    public void setMaterialName(String materialName) {
         this.materialName = materialName;
     }
     public Unit getUnit() {
@@ -35,5 +36,13 @@ public class Material {
     }
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 }

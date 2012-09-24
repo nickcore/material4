@@ -6,6 +6,7 @@
                 guide: "unit",
                 urls: {
                     meta: "/api/{guide}/info.json",
+                    list: "/api/{guide}/list.json",
                     add: "/api/{guide}/add.json",
                     del: "/api/{guide}/delete.json",
                     edit: "/api/{guide}/edit.json"
@@ -32,7 +33,7 @@
                         colModel.push({name: propName, index: propName, width:prop.width, editable:true, editoptions:{size:10}}); //readonly:true,
                     }
                     $($this).jqGrid({
-                        url:'units.json',
+                        url:opts.urls.list,
                         datatype: 'json',
                         mtype: 'GET',
                         ajaxEditOptions: { contentType: "application/json" },

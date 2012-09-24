@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import by.vitsoft.material.dto.Unit;
+import by.vitsoft.material.dto.response.BaseResponse;
 import by.vitsoft.material.service.GuideService;
 
 import com.vaadin.Application;
@@ -65,8 +66,8 @@ public class MyVaadinApplication extends Application {
         table.addContainerProperty("UnitName", String.class, null);
         table.setColumnHeader("UnitName", "Имя");
         // Add a few items in the table.
-        Collection<Unit> units =  guideService.getUnits(null).getData();
-        for (Unit unit: units ) {
+        BaseResponse<Unit> units =  guideService.getGuides("unit", null);
+        for (Unit unit: units.getData()) {
             table.addItem(new Object[] {unit.getId(), unit.getUnitId(), unit.getUnitName()},
                     unit.getId()); // Item identifier
         }
